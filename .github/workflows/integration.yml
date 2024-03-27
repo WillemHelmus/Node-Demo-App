@@ -2,9 +2,9 @@ name: Integration
 
 on:
   push:
-    branches: [ sast-start ]
+    branches: [ development, steven ]
   pull_request:
-    branches: [ development, main ]
+    branches: [ main ]
     types: [opened, synchronize, reopened]   
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
     - run: npm i
     - run: npm run build
 
-sonarcloud:
+  sonarcloud:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -40,17 +40,17 @@ sonarcloud:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_DEMO }}
 
-#  security:
- #   runs-on: ubuntu-latest
- #   steps:
- #     - uses: actions/checkout@master
-   #   - name: Run Snyk to check for vulnerabilities
-  #      uses: snyk/actions/node@master
-   #     continue-on-error: false
-   #     env:
-   #       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    #    with:
-   #       command: monitor
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: false
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
 
   unit-tests:
 
